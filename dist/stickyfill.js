@@ -25,17 +25,15 @@
     if (!isWindowDefined || !window.getComputedStyle) seppuku = true;
     // Dont’t get in a way if the browser supports `position: sticky` natively.
     else {
-            (function () {
-                var testNode = document.createElement('div');
+            var testNode = document.createElement('div');
     
-                if (['', '-webkit-', '-moz-', '-ms-'].some(function (prefix) {
-                    try {
-                        testNode.style.position = prefix + 'sticky';
-                    } catch (e) {}
+            if (['', '-webkit-', '-moz-', '-ms-'].some(function (prefix) {
+                try {
+                    testNode.style.position = prefix + 'sticky';
+                } catch (e) {}
     
-                    return testNode.style.position != '';
-                })) seppuku = true;
-            })();
+                return testNode.style.position != '';
+            })) seppuku = true;
         }
     
     /*
@@ -292,7 +290,9 @@
     
                 if (!this._active || this._removed) return;
     
-                this._clone.node.parentNode.removeChild(this._clone.node);
+                if (this._clone.node.parentNode) {
+                    this._clone.node.parentNode.removeChild(this._clone.node);
+                }
                 delete this._clone;
     
                 extend(this._node.style, this._styles);
@@ -400,9 +400,9 @@
             };
     
             for (var i = 0; i < nodeList.length; i++) {
-                var _ret2 = _loop(i);
+                var _ret = _loop(i);
     
-                if (_ret2 === 'continue') continue;
+                if (_ret === 'continue') continue;
             }
     
             return addedStickies;
